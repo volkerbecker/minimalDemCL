@@ -15,6 +15,7 @@ minimalDemCL
 #ignore eclipse projekt file
 .cproject
 .project
+.settings
 #ignore makefile because it is platform dependend
 Makefile
 

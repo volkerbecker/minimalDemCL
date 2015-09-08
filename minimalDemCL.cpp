@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
 	//Parameters relevant for the host only
 	const int particleNumber = atoi(argv[1]);
 	const float maxvelocity = 10; // Maximal velocity
-	const int maxTimesteps = 1000000;
+	const int maxTimesteps = 100000;
     const int snapshot = 1000;
 
 	//Kernel Parameters
@@ -140,14 +140,7 @@ int main(int argc, char* argv[]) {
 		velocities[i].s[0]-=korrektur.s[0];
 		velocities[i].s[1]-=korrektur.s[1];
 	}
-	korrektur = momentum(velocities, kernelParams.Nparticle,
-				kernelParams.mass);
-	korrektur.s[0]/= (kernelParams.mass *kernelParams.Nparticle);
-		korrektur.s[1]/= (kernelParams.mass *kernelParams.Nparticle);
-		for(int i=0;i<kernelParams.Nparticle;i++) {
-			velocities[i].s[0]-=korrektur.s[0];
-			velocities[i].s[1]-=korrektur.s[1];
-		}
+
 
 	//initalize visualisation
 	Visualizer visoutput;
@@ -320,16 +313,18 @@ int main(int argc, char* argv[]) {
 							kernelParams.Nparticle,kernelParams.mass) << "\n";
 					cl_float2 p=momentum(velocities,kernelParams.Nparticle,kernelParams.mass);
 					std::cout << "momentum: " << p.s[0] << " " << p.s[1] << std::endl;
- 					char number[16]; // string which will contain the number
+ 					char number[64]; // string which will contain the number
 					sprintf(number, "./data/snap%04d.png", snapnumber++);
 					//visoutput.snapshot(number);
-					sprintf(number, "./data/zoom%04d.png", snapnumber++);
+					sprintf(number, "./data/center%04d.png", snapnumber++);
+					//visoutputcenter.snapshot(number);
 				//	saveSnapShot(number, positions, velocities, accelerations,
 				//			particleNumber);
 				} // Write Data from last Snapshot to HD
 				  // then read the momentary data
 				queue.enqueueReadBuffer(bufferPositions, CL_TRUE, 0, datasize,
 						positions);
+
 				queue.enqueueReadBuffer(bufferVelocities, CL_TRUE, 0, datasize,
 						velocities);
 				queue.enqueueReadBuffer(bufferAccelarations, CL_TRUE, 0,
@@ -338,21 +333,13 @@ int main(int argc, char* argv[]) {
 						verletNeedsUpdateSize, verletNeedsUpdate);
 			}
 		}
-
-		queue.enqueueReadBuffer(bufferPositions, CL_TRUE, 0, datasize,
-				positions);
-
-		// read the results;
-
-		//for(int i=0;i<particleNumber;++i) {
-		//	std::cout << positions[i].s[0] << " " << positions[i].s[1] << std::endl;
-		//}
-		std::cout << std::endl;
 	} catch (cl::Error &error) {
 		std::cerr << error.what() << "(" << error.err() << ")" << std::endl;
 	}
 	/////////////// Release CL Resources
 	/////////////// free host ram
+	visoutput.close();
+	visoutputcenter.close();
 	delete positions;
 	delete velocities;
 	delete accelerations;
