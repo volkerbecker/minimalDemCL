@@ -336,7 +336,7 @@ int main(int argc, char* argv[]) {
 	} catch (cl::Error &error) {
 		std::cerr << error.what() << "(" << error.err() << ")" << std::endl;
 	}
-	/////////////// Release CL Resources
+	/////////////// Release CL Resourcesb
 	/////////////// free host ram
 	visoutput.close();
 	visoutputcenter.close();

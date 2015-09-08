@@ -7,8 +7,6 @@
 //Geschwindikeiten und Beschleunigung initialisieren
 void initialVelAndAcc(cl_float2 &velocity, cl_float2 &acceleretion,
 		const float & maxvelocity) {
-	double vxmean=0;
-	double vymean=0;
 	velocity.s[0] = (float) 2.0*((drand48()-0.5) * maxvelocity);
 	velocity.s[1] = (float) 2.0*((drand48()-0.5) * maxvelocity);
 	//velocity.s[1] = velocity.s[0];
@@ -20,7 +18,7 @@ void initializeParticles(int initialOrder, cl_float2 *positions,
 		cl_float2 *velocities, cl_float2 *accelerations, const cl_float2 &LXLY,
 		const cl_float radius, const cl_int & N, const int &maxvel) {
 	cl_float radiussq = radius * radius;
-	srand(5); // to make the initialization reproducible
+	srand48(5); // to make the initialization reproducible
 	switch (initialOrder) {
 	case RANDOM:
 		bool positionvalid;
