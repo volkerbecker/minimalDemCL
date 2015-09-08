@@ -1,0 +1,21 @@
+#ignore backup files
+.~*
+#ingnore Object files,bilder etc
+*.o
+*.png
+*.a
+*.log
+*.dat
+*.d
+gmon.out
+#ignore Documentation Folder (create it local using doxygen)
+documentation/*
+#ignore executable
+minimalDemCL
+#ignore eclipse projekt file
+.cproject
+.project
+#ignore makefile because it is platform dependend
+Makefile
+
+
